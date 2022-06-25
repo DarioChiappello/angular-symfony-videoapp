@@ -1,0 +1,85 @@
+<div class="col-md-12 mt-3" *ngIf="identity">
+    <h1>{{page_title}}</h1>
+    <hr>
+
+    <div class="card-columns">
+      <article class="card w-100" *ngFor="let video of videos">
+        <div class="card-header">
+          <h3>
+            {{video.title}}
+          </h3>
+
+        </div>
+        <div class="card-body">
+            <!--Imagen miniatura-->
+            <div class="video-image w-100" *ngIf="video.url">
+              <img src="{{getThumb(video.url)}}" class="w-100" />
+
+            </div>
+
+            <div class="video-image w-100" *ngIf="!video.url">
+              <img src="assets/images/video_default.png" class="w-100" />
+
+            </div>
+
+            <!--Botones-->
+            <div class="video-buttons mt-3">
+              <a [routerLink]="['/video', video.id]" class="btn btn-success mr-2">Leer</a>
+              <a [routerLink]="['/editar-favorito', video.id]" class="btn btn-warning mr-2">Editar</a>
+              <!-- Trigger the modal with a button -->
+              <button type="button" class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#borrar'+video.id">Borrar</button>
+
+              <!-- Modal -->
+              <div id="{{'borrar'+video.id}}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      
+                      <h4 class="modal-title">¿Está seguro de eliminar el video?</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      Se eliminará el video {{video.title}}
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-warning text-white" data-dismiss="modal">Cancelar</button>
+                      <a (click)="deleteVideo(video.id)" class="btn btn-danger text-white"data-dismiss="modal">Eliminar</a>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+        </div>
+      </article>
+
+    </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" [routerLink]="['/inicio', prev_page]">Anterior</a>
+        </li>
+        <li class="page-item" *ngFor="let num of number_pages">
+          <a class="page-link" [routerLink]="['/inicio', num]">{{num}}</a>
+        </li>
+        
+        <li class="page-item">
+          <a class="page-link" [routerLink]="['/inicio', next_page]">Siguiente</a>
+        </li>
+      </ul>
+    </nav>
+</div>
+<div class="col-md-12 mt-3" *ngIf="!identity">
+    <div class="jumbotron">
+        <h1 class="display-4">VIDEOS APP</h1>
+        <p class="lead">Registrese para poder guardar videos dentro de la plataforma.</p>
+        <hr class="my-4">
+       
+        <p class="lead">
+          <a class="btn btn-primary btn-lg" [routerLink]="['/login']" role="button">Login</a>
+          <a class="btn btn-success btn-lg ml-3" [routerLink]="['/registro']" role="button">Registrarse</a>
+        </p>
+      </div>
+</div>
